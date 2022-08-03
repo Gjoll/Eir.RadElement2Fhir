@@ -2,7 +2,7 @@
   "profiles": {
     "RadElement2Fhir": {
       "commandName": "Project",
-      "commandLineArgs": "-id RDES25"
+      "commandLineArgs": "-id RDE20"
     }
   }
 }
