@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "RadElement2Fhir": {
+      "commandName": "Project",
+      "commandLineArgs": "-id RDES25"
+    }
+  }
+}
