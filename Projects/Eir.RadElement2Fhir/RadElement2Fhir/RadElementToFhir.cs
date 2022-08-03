@@ -11,7 +11,7 @@ namespace RadElement2Fhir
         public String OutputPath = String.Empty;
         public String RadElementId = String.Empty;
 
-        public async void Execute()
+        public async Task Execute()
         {
             if (String.IsNullOrEmpty(RadElementId))
                 throw new Exception($"Rad element id not specified");

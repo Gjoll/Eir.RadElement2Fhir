@@ -27,7 +27,7 @@ try
                 throw new Exception($"Unknown command line arg '{arg}'");
         }
     }
-    processor.Execute();
+    processor.Execute().Wait();
     return 0;
 }
 catch(Exception err)

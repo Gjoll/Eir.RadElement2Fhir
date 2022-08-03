@@ -20,7 +20,7 @@ namespace RadElement2Fhir
 
             Console.WriteLine($"{fcn}. Querying RadElement set {radElementSetId}");
 
-            RestResponse response = await this.SendCommand($"sets?search={QueryRadElementSet}");
+            RestResponse response = await this.SendCommand($"sets?search={radElementSetId}");
             //GetBreastCancerRiskByAssessment retVal = response.ParseResponse<GetBreastCancerRiskByAssessment>();
             //if (retVal.Data.AssessmentId != assessmentId)
             //    throw new Exception($"Invalid AssessmentId '{retVal.Data.AssessmentId}' returned, expected {assessmentId}");
@@ -35,7 +35,7 @@ namespace RadElement2Fhir
             try
             {
                 Console.WriteLine($"{fcn} Command '{command}'");
-                RestClient client = new RestClient("http://api3.rsna.org/radelement/public/v1/");
+                RestClient client = new RestClient("https://api3.rsna.org/radelement/public/v1/");
                 RestRequest request = new RestRequest(command);
 
                 RestResponse response = await client.ExecuteGetAsync(request);
