@@ -34,10 +34,8 @@ ipch/
 [Oo]bj/
 [Bb]in
 [Qq]a/
-
 [Rr]elease*/
 *.eps
-
 #Tooling
 _ReSharper*/
 *.resharper
@@ -48,8 +46,8 @@ _ReSharper*/
 **/packages/*
 # except build/, which is used as an MSBuild target.
 !**/packages/
-
 **/.vs/*
-
 node_modules/
 package-lock.json
+output
+nuget.exe
