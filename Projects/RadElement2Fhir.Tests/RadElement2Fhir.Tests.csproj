@@ -22,7 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Eir.RadElement2Fhir\RadElement2Fhir\RadElement2Fhir.csproj" />
+    <ProjectReference Include="..\RadElement2Fhir\RadElement2Fhir.csproj" />
   </ItemGroup>
 
 </Project>

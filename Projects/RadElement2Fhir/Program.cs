@@ -5,7 +5,7 @@ try
     if (args.Length != 1)
         throw new Exception($"Missing erquired option file path");
     Options options = Options.Load(args[0]);
-    RadElementToFhir processor = new RadElementToFhir(options);
+    Processor processor = new Processor(options);
     processor.Execute().Wait();
     return 0;
 }

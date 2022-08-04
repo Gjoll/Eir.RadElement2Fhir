@@ -2,17 +2,18 @@
 using RadElement2Fhir.Packages;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace RadElement2Fhir
 {
-    internal class RadElementToFhir
+    public class Processor
     {
         Options options;
 
-        public RadElementToFhir(Options options)
+        public Processor(Options options)
         {
             this.options = options;
         }
@@ -35,6 +36,7 @@ namespace RadElement2Fhir
             String vsOutputDir = options.VSOutput;
             if (String.IsNullOrEmpty(vsOutputDir) == true)
             {
+                Trace.WriteLine(fhirValueSet);
                 Console.WriteLine(fhirValueSet);
                 return;
             }
