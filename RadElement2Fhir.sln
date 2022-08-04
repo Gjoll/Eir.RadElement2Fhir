@@ -7,12 +7,16 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RadElement2Fhir", "Projects
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RadElement2Fhir.Tests", "Projects\RadElement2Fhir.Tests\RadElement2Fhir.Tests.csproj", "{14F0C79D-69E6-49FF-9DD5-830620DE01D1}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "_build", "build\_build.csproj", "{0A483769-796A-4005-A195-24909E304516}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0A483769-796A-4005-A195-24909E304516}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0A483769-796A-4005-A195-24909E304516}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24BA8095-7422-4CEB-8C9E-0E5A06F5BF52}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{24BA8095-7422-4CEB-8C9E-0E5A06F5BF52}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24BA8095-7422-4CEB-8C9E-0E5A06F5BF52}.Release|Any CPU.ActiveCfg = Release|Any CPU
