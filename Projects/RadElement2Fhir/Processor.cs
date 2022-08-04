@@ -27,16 +27,17 @@ namespace RadElement2Fhir
         }
 
         async Task CreateValueSet(String radElementId)
-        { 
+        {
             if (String.IsNullOrEmpty(radElementId))
                 throw new Exception($"Rad element id not specified");
             GetElement element = await LoadRadElementSet(radElementId);
             if (CreateFshValueSet(element, out String vsName, out String fhirValueSet) == false)
                 return;
             String vsOutputDir = options.VSOutput;
+
+            Trace.WriteLine(fhirValueSet);
             if (String.IsNullOrEmpty(vsOutputDir) == true)
             {
-                Trace.WriteLine(fhirValueSet);
                 Console.WriteLine(fhirValueSet);
                 return;
             }
@@ -47,14 +48,52 @@ namespace RadElement2Fhir
 
         bool CreateFshValueSet(GetElement element, out String vsName, out String vsText)
         {
+            if (element.Data == null)
+                throw new Exception($"GetElement data field is empty");
+            GetElementData data = element.Data;
+
             StringBuilder sb = new StringBuilder();
-            vsName = $"{element.Data?.Name?.ToMachineName()}VS";
+            vsName = $"{data.Name?.ToMachineName()}VS";
             sb.AppendLine($"ValueSet: {vsName}");
-            sb.AppendLine($"Id: {element.Data?.Id?.ToMachineName()}");
-            sb.AppendLine($"Title: \"{element.Data?.Name}\"");
+            sb.AppendLine($"Id: {data.Id?.ToMachineName()}");
+            sb.AppendLine($"Title: \"{data.Name}\"");
             sb.AppendLine($"Description: \"\"\"");
-            sb.Append(element.Data?.Definition?.Break("             "));
+            sb.Append(data.Definition?.Break("             "));
             sb.AppendLine($"             \"\"\"");
+            {
+                Packages.Version? version = data.Version;
+                if (version != null)
+                {
+                    if (version.Date != null)
+                        sb.AppendLine($" * ^date = {version.Date}");
+                    if (version.Name != null)
+                        sb.AppendLine($" * ^version = \"{version.Name}\"");
+                    switch (version.Status?.Trim().ToUpper())
+                    {
+                        case null:
+                            break;
+                        case "PUBLISHED":
+                            sb.AppendLine($" * ^status = #active");
+                            break;
+                        default:
+                            throw new Exception($"Unknown version status '{version.Status}");
+                    }
+                }
+            }
+
+            if (data.Index_Codes != null)
+            {
+                foreach (Index_Code indexCode in data.Index_Codes)
+                {
+                    String? system  = indexCode.System;
+                    String? code = indexCode.Code;
+                    String? display = indexCode.Display;
+
+                    sb.AppendLine($"{system}#{code} \"{display}\"");
+                }
+            }
+
+
             vsText = sb.ToString();
             return true;
         }

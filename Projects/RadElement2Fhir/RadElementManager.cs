@@ -8,6 +8,7 @@ using Newtonsoft;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 using RadElement2Fhir.Packages;
+using System.Diagnostics;
 
 namespace RadElement2Fhir
 {
@@ -19,6 +20,7 @@ namespace RadElement2Fhir
         {
             const String fcn = $"{ClsName}.{nameof(QueryRadElementSet)}";
 
+            Trace.WriteLine($"{fcn}. Querying RadElement set {radElementSetId}");
             Console.WriteLine($"{fcn}. Querying RadElement set {radElementSetId}");
 
             RestResponse response = await this.SendCommand($"elements/{radElementSetId}?page=1");
@@ -27,6 +29,10 @@ namespace RadElement2Fhir
             GetElement? element = JsonConvert.DeserializeObject<GetElement>(response.Content);
             if (element == null)
                 throw new Exception($"Error deserializing element");
+            {
+                String log = JsonConvert.SerializeObject(element, Formatting.Indented);
+                Trace.WriteLine($"{fcn}. {log}");
+            }
             return element;
         }
 
@@ -35,7 +41,7 @@ namespace RadElement2Fhir
         {
             const String fcn = $"{ClsName}.{nameof(SendCommand)}";
 
-            //Console.WriteLine($"{fcn} Command '{command}'");
+            Trace.WriteLine($"{fcn} Command '{command}'");
             RestClient client = new RestClient("https://api3.rsna.org/radelement/public/v1/");
             RestRequest request = new RestRequest(command);
 
