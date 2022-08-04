@@ -1,0 +1,11 @@
+﻿assembly-versioning-scheme: MajorMinorPatch
+assembly-file-versioning-format: '{Major}.{Minor}.{Patch}'
+
+branches:
+  main:
+    increment: None
+  develop:
+    regex: ^Dev$
+    increment: None
+    tag: ''
+    source-branches: ['master']

@@ -10,7 +10,6 @@
 	<PropertyGroup>
 		<PackAsTool>false</PackAsTool>
 		<ToolCommandName>RadElement2Fhir</ToolCommandName>
-		<Version>0.1.0</Version>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
 		<PackageProjectUrl>https://github.com/Gjoll/Eir.RadElement2Fhir</PackageProjectUrl>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
@@ -19,6 +18,10 @@
 	</PropertyGroup>
 
 	<ItemGroup>
+		<PackageReference Include="GitVersion.MsBuild" Version="5.10.3">
+		  <PrivateAssets>all</PrivateAssets>
+		  <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+		</PackageReference>
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
 		<PackageReference Include="RestSharp" Version="108.0.1" />
 	</ItemGroup>
