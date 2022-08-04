@@ -23,7 +23,7 @@ class Build : NukeBuild
 
     [Solution] readonly Solution Solution;
     //[GitRepository] readonly GitRepository GitRepository;
-    //[GitVersion] readonly GitVersion GitVersion;
+    [GitVersion] readonly GitVersion GitVersion;
 
     Project ServiceProject => Solution.GetProject("RadElement2Fhir");
 
@@ -60,10 +60,10 @@ class Build : NukeBuild
         {
             DotNetPublish(s => s
                 .SetConfiguration(Configuration.Release)
-                //.SetAssemblyVersion(GitVersion.AssemblySemVer)
-                //.SetFileVersion(GitVersion.AssemblySemFileVer)
-                //.SetInformationalVersion(GitVersion.AssemblySemFileVer)
-                //.SetDescription(GitVersion.InformationalVersion)
+                .SetAssemblyVersion(GitVersion.AssemblySemVer)
+                .SetFileVersion(GitVersion.AssemblySemFileVer)
+                .SetInformationalVersion(GitVersion.AssemblySemFileVer)
+                .SetDescription(GitVersion.InformationalVersion)
                 .SetSelfContained(false)
                 .SetProject(ServiceProject)
                 .SetOutput(OutputDirectory / ServiceProject.Name)
