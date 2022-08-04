@@ -11,6 +11,8 @@ namespace RadElement2Fhir
 {
     public class Processor
     {
+        Dictionary<String, SystemCodes> systemDict = new Dictionary<string, SystemCodes>();
+
         Options options;
 
         public Processor(Options options)
@@ -24,6 +26,18 @@ namespace RadElement2Fhir
             {
                 await CreateValueSet(vs.Id);
             }
+        }
+
+        void AddSystemCode(IndexCode indexCode)
+        {
+            String systemName = indexCode.System.Trim().ToUpper();
+
+            if (this.systemDict.TryGetValue(systemName, out SystemCodes systemCodes) == false)
+            {
+                systemCodes = new SystemCodes();
+                this.systemDict.Add(systemName, systemCodes);
+            }
+            systemCodes.Codes.Add(indexCode);
         }
 
         async Task CreateValueSet(String radElementId)
@@ -92,6 +106,7 @@ namespace RadElement2Fhir
                     String? display = indexCode.Display;
 
                     sb.AppendLine($"{system}#{code} \"{display}\"");
+                    AddSystemCode(indexCode);
                 }
             }
 
