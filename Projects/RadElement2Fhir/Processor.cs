@@ -57,9 +57,11 @@ namespace RadElement2Fhir
             sb.AppendLine($"ValueSet: {vsName}");
             sb.AppendLine($"Id: {data.Id?.ToMachineName()}");
             sb.AppendLine($"Title: \"{data.Name}\"");
+
             sb.AppendLine($"Description: \"\"\"");
-            sb.Append(data.Definition?.Break("             "));
-            sb.AppendLine($"             \"\"\"");
+            sb.Append(data.Definition?.Break("    "));
+            sb.AppendLine($"    \"\"\"");
+
             {
                 Packages.Version? version = data.Version;
                 if (version != null)
