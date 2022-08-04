@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32519.379
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RadElement2Fhir", "..\Projects\Eir.RadElement2Fhir\RadElement2Fhir\RadElement2Fhir.csproj", "{24BA8095-7422-4CEB-8C9E-0E5A06F5BF52}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RadElement2Fhir", "..\Projects\Eir.RadElement2Fhir\RadElement2Fhir\RadElement2Fhir.csproj", "{24BA8095-7422-4CEB-8C9E-0E5A06F5BF52}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RadElement2Fhir.Tests", "..\Projects\RadElement2Fhir.Tests\RadElement2Fhir.Tests.csproj", "{14F0C79D-69E6-49FF-9DD5-830620DE01D1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{24BA8095-7422-4CEB-8C9E-0E5A06F5BF52}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24BA8095-7422-4CEB-8C9E-0E5A06F5BF52}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24BA8095-7422-4CEB-8C9E-0E5A06F5BF52}.Release|Any CPU.Build.0 = Release|Any CPU
+		{14F0C79D-69E6-49FF-9DD5-830620DE01D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{14F0C79D-69E6-49FF-9DD5-830620DE01D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{14F0C79D-69E6-49FF-9DD5-830620DE01D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{14F0C79D-69E6-49FF-9DD5-830620DE01D1}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

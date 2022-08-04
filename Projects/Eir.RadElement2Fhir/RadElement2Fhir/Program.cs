@@ -2,31 +2,10 @@
 
 try
 {
-    RadElementToFhir processor = new RadElementToFhir();
-    String[] clArgs = Environment.GetCommandLineArgs();
-    Int32 clArgPtr = 1;
-    String Arg()
-    {
-        if (clArgPtr > clArgs.Length)
-            throw new Exception("Invalid command line args");
-        return clArgs[clArgPtr++];
-    }
-
-    while (clArgPtr < clArgs.Length)
-    {
-        String arg = Arg();
-        switch (arg.Trim().ToUpper())
-        {
-            case "-O":
-                processor.OutputPath = Arg();
-                break;
-            case "-ID":
-                processor.RadElementId = Arg();
-                break;
-            default:
-                throw new Exception($"Unknown command line arg '{arg}'");
-        }
-    }
+    if (args.Length != 1)
+        throw new Exception($"Missing erquired option file path");
+    Options options = Options.Load(args[0]);
+    RadElementToFhir processor = new RadElementToFhir(options);
     processor.Execute().Wait();
     return 0;
 }

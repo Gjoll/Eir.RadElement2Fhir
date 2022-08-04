@@ -10,33 +10,51 @@ namespace RadElement2Fhir
 {
     internal class RadElementToFhir
     {
-        public String OutputPath = String.Empty;
-        public String RadElementId = String.Empty;
+        Options options;
+
+        public RadElementToFhir(Options options)
+        {
+            this.options = options;
+        }
 
         public async Task Execute()
         {
-            if (String.IsNullOrEmpty(RadElementId))
-                throw new Exception($"Rad element id not specified");
-            GetElement element = await LoadRadElementSet(this.RadElementId);
-            String text = CreateFshValueSet(element);
-            if (String.IsNullOrEmpty(OutputPath) == false)
+            foreach (Options.ValueSet vs in options.ValueSets)
             {
-                File.WriteAllText(OutputPath, text);
-                return;
+                await CreateValueSet(vs.Id);
             }
-            Console.WriteLine(text);
         }
 
-        String CreateFshValueSet(GetElement element)
+        async Task CreateValueSet(String radElementId)
+        { 
+            if (String.IsNullOrEmpty(radElementId))
+                throw new Exception($"Rad element id not specified");
+            GetElement element = await LoadRadElementSet(radElementId);
+            if (CreateFshValueSet(element, out String vsName, out String fhirValueSet) == false)
+                return;
+            String vsOutputDir = options.VSOutput;
+            if (String.IsNullOrEmpty(vsOutputDir) == true)
+            {
+                Console.WriteLine(fhirValueSet);
+                return;
+            }
+
+            String vsOutputPath = Path.Combine(vsOutputDir, vsName);
+            File.WriteAllText(vsOutputPath, fhirValueSet);
+        }
+
+        bool CreateFshValueSet(GetElement element, out String vsName, out String vsText)
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"ValueSet: {element.Data?.Name.ToMachineName()}VS");
-            sb.AppendLine($"Id: {element.Data?.Id.ToMachineName()}");
+            vsName = $"{element.Data?.Name?.ToMachineName()}VS";
+            sb.AppendLine($"ValueSet: {vsName}");
+            sb.AppendLine($"Id: {element.Data?.Id?.ToMachineName()}");
             sb.AppendLine($"Title: \"{element.Data?.Name}\"");
             sb.AppendLine($"Description: \"\"\"");
             sb.Append(element.Data?.Definition?.Break("             "));
             sb.AppendLine($"             \"\"\"");
-            return sb.ToString();
+            vsText = sb.ToString();
+            return true;
         }
 
         async Task<GetElement> LoadRadElementSet(String radElementId)
