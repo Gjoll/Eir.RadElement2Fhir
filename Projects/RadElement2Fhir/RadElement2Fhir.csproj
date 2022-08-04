@@ -11,10 +11,10 @@
 		<PackAsTool>false</PackAsTool>
 		<ToolCommandName>RadElement2Fhir</ToolCommandName>
 		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-		<PackageProjectUrl>https://github.com/Gjoll/Eir.RadElement2Fhir</PackageProjectUrl>
+		<PackageProjectUrl>https://github.com/Gjoll/RadElement2Fhir</PackageProjectUrl>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 		<RepositoryType></RepositoryType>
-		<RepositoryUrl>https://github.com/Gjoll/Eir.RadElement2Fhir</RepositoryUrl>
+		<RepositoryUrl>https://github.com/Gjoll/RadElement2Fhir</RepositoryUrl>
 	</PropertyGroup>
 
 	<ItemGroup>
