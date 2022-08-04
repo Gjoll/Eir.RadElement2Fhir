@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Newtonsoft;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
+using RadElement2Fhir.Packages;
 
 namespace RadElement2Fhir
 {
@@ -14,17 +15,19 @@ namespace RadElement2Fhir
     {
         const String ClsName = nameof(RadElementManager);
 
-        public async Task QueryRadElementSet(String radElementSetId)
+        public async Task<GetElement> QueryRadElementSet(String radElementSetId)
         {
             const String fcn = $"{ClsName}.{nameof(QueryRadElementSet)}";
 
             Console.WriteLine($"{fcn}. Querying RadElement set {radElementSetId}");
 
-            RestResponse response = await this.SendCommand($"elements/{radElementSetId}");
-            //GetBreastCancerRiskByAssessment retVal = response.ParseResponse<GetBreastCancerRiskByAssessment>();
-            //if (retVal.Data.AssessmentId != assessmentId)
-            //    throw new Exception($"Invalid AssessmentId '{retVal.Data.AssessmentId}' returned, expected {assessmentId}");
-            //return retVal;
+            RestResponse response = await this.SendCommand($"elements/{radElementSetId}?page=1");
+            if (String.IsNullOrEmpty(response.Content) == true)
+                throw new Exception($"Empty content returned from API call");
+            GetElement? element = JsonConvert.DeserializeObject<GetElement>(response.Content);
+            if (element == null)
+                throw new Exception($"Error deserializing element");
+            return element;
         }
 
 
@@ -32,40 +35,26 @@ namespace RadElement2Fhir
         {
             const String fcn = $"{ClsName}.{nameof(SendCommand)}";
 
-            try
+            //Console.WriteLine($"{fcn} Command '{command}'");
+            RestClient client = new RestClient("https://api3.rsna.org/radelement/public/v1/");
+            RestRequest request = new RestRequest(command);
+
+            RestResponse response = await client.ExecuteGetAsync(request);
+
+            if (response.ResponseStatus != ResponseStatus.Completed)
             {
-                Console.WriteLine($"{fcn} Command '{command}'");
-                RestClient client = new RestClient("https://api3.rsna.org/radelement/public/v1/");
-                RestRequest request = new RestRequest(command);
-
-                RestResponse response = await client.ExecuteGetAsync(request);
-
-                if (response.ResponseStatus != ResponseStatus.Completed)
-                {
-                    Console.WriteLine($"{fcn} Response Status '{response.StatusCode}' '{response.StatusDescription}'");
-                    if (String.IsNullOrEmpty(response.Content) == false)
-                        Console.WriteLine($"{fcn} Response Content '{response.Content}'");
-                    if (String.IsNullOrEmpty(response.ErrorMessage) == false)
-                        Console.WriteLine($"{fcn} Response ErrorMessage '{response.ErrorMessage}'");
-                    throw new Exception($"{fcn} Error ResponseStatus {response.ResponseStatus}");
-                }
-
+                Console.Error.WriteLine($"{fcn} Response Status '{response.StatusCode}' '{response.StatusDescription}'");
                 if (String.IsNullOrEmpty(response.Content) == false)
-                {
-                    JObject jDoc = JObject.Parse(response.Content);
-                    String fJson = JsonConvert.SerializeObject(jDoc, Formatting.Indented);
-                    Console.WriteLine($"{fcn} Response Content\n{fJson.Indent()}");
-                }
-
-                if (response.IsSuccessful == false)
-                    throw new Exception($"{fcn} HTTP Error code {response.StatusCode} returned");
-
-                return response;
+                    Console.Error.WriteLine($"{fcn} Response Content '{response.Content}'");
+                if (String.IsNullOrEmpty(response.ErrorMessage) == false)
+                    Console.Error.WriteLine($"{fcn} Response ErrorMessage '{response.ErrorMessage}'");
+                throw new Exception($"{fcn} Error ResponseStatus {response.ResponseStatus}");
             }
-            catch(Exception err)
-            {
-                throw err;
-            }
+
+            if (response.IsSuccessful == false)
+                throw new Exception($"{fcn} HTTP Error code {response.StatusCode} returned");
+
+            return response;
         }
     }
 }

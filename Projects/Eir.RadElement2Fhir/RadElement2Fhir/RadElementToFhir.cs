@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using RadElement2Fhir.Packages;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,13 +17,32 @@ namespace RadElement2Fhir
         {
             if (String.IsNullOrEmpty(RadElementId))
                 throw new Exception($"Rad element id not specified");
-            await LoadRadElementSet(this.RadElementId);
+            GetElement element = await LoadRadElementSet(this.RadElementId);
+            String text = CreateFshValueSet(element);
+            if (String.IsNullOrEmpty(OutputPath) == false)
+            {
+                File.WriteAllText(OutputPath, text);
+                return;
+            }
+            Console.WriteLine(text);
         }
 
-        async Task LoadRadElementSet(String radElementId)
+        String CreateFshValueSet(GetElement element)
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"ValueSet: {element.Data?.Name.ToMachineName()}VS");
+            sb.AppendLine($"Id: {element.Data?.Id.ToMachineName()}");
+            sb.AppendLine($"Title: \"{element.Data?.Name}\"");
+            sb.AppendLine($"Description: \"\"\"");
+            sb.Append(element.Data?.Definition?.Break("             "));
+            sb.AppendLine($"             \"\"\"");
+            return sb.ToString();
+        }
+
+        async Task<GetElement> LoadRadElementSet(String radElementId)
         {
             RadElementManager mgr = new RadElementManager();
-            await mgr.QueryRadElementSet(radElementId);
+            return await mgr.QueryRadElementSet(radElementId);
         }
     }
 }
