@@ -85,7 +85,7 @@ namespace RadElement2Fhir
 
             if (data.Index_Codes != null)
             {
-                foreach (Index_Code indexCode in data.Index_Codes)
+                foreach (IndexCode indexCode in data.Index_Codes)
                 {
                     String? system  = indexCode.System;
                     String? code = indexCode.Code;
