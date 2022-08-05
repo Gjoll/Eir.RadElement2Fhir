@@ -15,19 +15,20 @@ namespace RadElement2Fhir
         public String UrlBase { get; set; } = "https://api3.rsna.org/radelement/public/v1/";
         public String VSOutput { get; set; } = String.Empty;
 
-        /// <summary>
-        /// Describes one SQL connection string
-        /// </summary>
         public class ValueSet
         {
             public String Id { get; set; }  = String.Empty;
         }
 
-        /// <summary>
-        /// Accounts
-        /// </summary>
-        public List<ValueSet> ValueSets { get; set; } = new List<ValueSet>();
+        public class CodeSystem
+        {
+            public String Name { get; set; } = String.Empty;
+            public String ID { get; set; } = String.Empty;
+            public String Title { get; set; } = String.Empty;
+        }
 
+        public List<ValueSet> ValueSets { get; set; } = new List<ValueSet>();
+        public List<CodeSystem> CodeSystems { get; set; } = new List<CodeSystem>();
 
         public void Save(String path)
         {

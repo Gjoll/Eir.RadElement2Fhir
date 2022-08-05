@@ -22,22 +22,67 @@ namespace RadElement2Fhir
 
         public async Task Execute()
         {
-            foreach (Options.ValueSet vs in options.ValueSets)
-            {
-                await CreateValueSet(vs.Id);
-            }
+            await CreateValueSets();
+            await CreateCodeSystems();
         }
 
         void AddSystemCode(IndexCode indexCode)
         {
+            if (String.IsNullOrEmpty(indexCode.System))
+                return;
+
             String systemName = indexCode.System.Trim().ToUpper();
 
-            if (this.systemDict.TryGetValue(systemName, out SystemCodes systemCodes) == false)
+            if (this.systemDict.TryGetValue(systemName, out SystemCodes? systemCodes) == false)
             {
                 systemCodes = new SystemCodes();
                 this.systemDict.Add(systemName, systemCodes);
             }
             systemCodes.Codes.Add(indexCode);
+        }
+
+        async Task CreateCodeSystems()
+        {
+            foreach (Options.CodeSystem cs in options.CodeSystems)
+                await CreateCodeSystem(cs.Name, cs.ID, cs.Title);
+        }
+
+        async Task CreateCodeSystem(String csName,
+            String csId,
+            String csTitle)
+        {
+            String name = $"{csName.ToMachineName()}CS";
+
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"CodeSystem: {name}");
+            sb.AppendLine($"Id: {csId}");
+            sb.AppendLine($"Title: \"{csTitle}\"");
+
+            if (this.systemDict.TryGetValue(csName.Trim().ToUpper(), out SystemCodes? systemCodes) == true)
+            {
+                foreach (var code in syste)
+            }
+
+            String fhirCodeSystem = sb.ToString();
+            String csOutputDir = options.VSOutput;
+            Trace.WriteLine(fhirCodeSystem);
+            if (String.IsNullOrEmpty(csOutputDir) == true)
+            {
+                Console.WriteLine(fhirCodeSystem);
+                return;
+            }
+
+            String csOutputPath = Path.Combine(csOutputDir, name);
+            File.WriteAllText(csOutputPath, fhirCodeSystem);
+        }
+
+
+
+
+        async Task CreateValueSets()
+        {
+            foreach (Options.ValueSet vs in options.ValueSets)
+                await CreateValueSet(vs.Id);
         }
 
         async Task CreateValueSet(String radElementId)
@@ -101,7 +146,7 @@ namespace RadElement2Fhir
             {
                 foreach (IndexCode indexCode in data.Index_Codes)
                 {
-                    String? system  = indexCode.System;
+                    String? system = indexCode.System;
                     String? code = indexCode.Code;
                     String? display = indexCode.Display;
 

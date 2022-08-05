@@ -16,6 +16,11 @@ namespace RadElement2Fhir.Tests
                 Id = "RDE20"
             });
 
+            options.CodeSystems.Add(new Options.CodeSystem
+            {
+                Name = "RADLEX"
+            });
+
             Processor processor = new Processor(options);
             await processor.Execute();
         }
